@@ -1,11 +1,9 @@
 <?php
 
 class Bootstrap {
-
     private static $autopaths = ['core', 'ext'];
 
     public static function run() {
-
         spl_autoload_register(['Bootstrap', 'autoload']);
         putenv('LANG=en_US.UTF-8');
         setlocale(LC_CTYPE, 'en_US.UTF-8');
@@ -26,13 +24,13 @@ class Bootstrap {
         } else {
             $public_href = $setup->get('PUBLIC_HREF');
             $x_head_tags = $context->get_x_head_html();
+            $fallback_mode = $context->is_fallback_mode();
             $fallback_html = (new Fallback($context))->get_html();
             require __DIR__ . '/pages/index.php';
         }
     }
 
     public static function autoload($class_name) {
-
         $filename = 'class-' . strtolower($class_name) . '.php';
 
         foreach (Bootstrap::$autopaths as $path) {

@@ -1,8 +1,28 @@
 # Changelog
 
-* now requires PHP 5.4.0+
+* replace PHP `getenv` calls with `$_SERVER` lookups
+* adds `view.fallbackMode` option to generally serve only fallback mode
+* serves fallback mode for text browsers (`curl`, `links`, `lynx`, `w3m`)
+* change type `txt-svg` to `img-svg`, no thumbs but preview
+* fixes a tree indentaion glitch
+* fixes shell command detection on Windows
+* fixes `.htaccess` auth issues
+* adds `rust` type and icon
+* removes *Install* section from `README.md`, to much trouble
+* updates `nl` translation
+* updates `pl` translation
+* updates build process to use `node 6.0+`, no need for babel now
+* updates `jQuery` to 2.2.4
+* updates `jquery-qrcode` to 0.14.0
+* updates `lodash` to 4.13.1 (removes `contains`)
+* updates `modulejs` to 1.14.0
+
+
+## v0.28.0 - *2015-12-19*
+
+* now requires PHP 5.5.0+
 * changes index path to `/_h5ai/public/index.php`
-* now only `/_h5ai/public/` needs to be accessable from web
+* now only `/_h5ai/public/` needs to be accessible from web
 * adds support for custom script and style additions
 * adds options to set font families
 * adds search
@@ -14,9 +34,14 @@
 * fixes preview bottom bar for small screen widths
 * lots of code cleanup and refactorings
 * changes API
-* updates build process
-* updates `lodash` to 3.8.0 (adds debounce and trim)
-* updates h5bp styles to 5.1.0
+* updates build process, now uses [ghu](https://larsjung.de/ghu/)
+* switches from jshint and jscs to [eslint](http://eslint.org/)
+* updates `jQuery` to 2.1.4
+* updates `lodash` to 3.9.3 (adds debounce and trim)
+* updates `marked` to 0.3.5
+* updates `modulejs` to 1.13.0
+* updates `prism` to 2015-12-19
+* updates h5bp styles to 5.2.0
 * updates `normalize.css` to 3.0.3
 * removes `Moment.js`
 
@@ -40,7 +65,7 @@
 * improves drag-select
 * improves image preview
 * prevents listing `_h5ai` folder and subfolders
-* updates build process, now uses [mkr](http://larsjung.de/mkr/) and [fQuery](http://larsjung.de/fquery/)
+* updates build process, now uses [mkr](https://larsjung.de/mkr/) and [fQuery](https://larsjung.de/fquery/)
 * updates `jQuery` to 2.1.3
 * updates `jQuery.qrcode` to 0.11.0
 * updates `Lo-Dash` to 3.6.0
@@ -222,9 +247,9 @@
 * changes language code `gr` to `el`
 * adds localization for filter placeholder
 * adds `hu` translation by [Rodolffo](https://github.com/Rodolffo)
-* updates to [jQuery.qrcode](http://larsjung.de/qrcode/) 0.2
-* updates to [jQuery.scrollpanel](http://larsjung.de/scrollpanel/) 0.1
-* updates to [modulejs](http://larsjung.de/modulejs/) 0.2
+* updates to [jQuery.qrcode](https://larsjung.de/qrcode/) 0.2
+* updates to [jQuery.scrollpanel](https://larsjung.de/scrollpanel/) 0.1
+* updates to [modulejs](https://larsjung.de/modulejs/) 0.2
 * updates to [Moment.js](http://momentjs.com) 1.7.0
 * updates to [Underscore.js](http://underscorejs.org) 1.3.3
 

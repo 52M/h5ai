@@ -1,12 +1,10 @@
 <?php
 
 class Setup {
-
     private $store;
     private $refresh;
 
     public function __construct($refresh = false) {
-
         $this->store = [];
         $this->refresh = $refresh;
 
@@ -19,7 +17,6 @@ class Setup {
     }
 
     private function set($key, $value) {
-
         if (array_key_exists($key, $this->store)) {
             Logger::log('setup key already taken', [
                 'key' => $key,
@@ -40,7 +37,6 @@ class Setup {
     }
 
     public function get($key) {
-
         if (!array_key_exists($key, $this->store)) {
             Logger::log('setup key not found', ['key' => $key]);
             exit;
@@ -50,18 +46,17 @@ class Setup {
     }
 
     private function add_globals_and_envs() {
-
         $this->set('PHP_VERSION', PHP_VERSION);
         $this->set('MIN_PHP_VERSION', MIN_PHP_VERSION);
 
-        $this->set('REQUEST_METHOD', getenv('REQUEST_METHOD'));
-        $this->set('REQUEST_HREF', parse_url(getenv('REQUEST_URI'), PHP_URL_PATH));
-        $this->set('SCRIPT_NAME', getenv('SCRIPT_NAME'));
-        $this->set('SERVER_SOFTWARE', getenv('SERVER_SOFTWARE'));
+        $this->set('REQUEST_METHOD', $_SERVER['REQUEST_METHOD']);
+        $this->set('REQUEST_HREF', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
+        $this->set('SCRIPT_NAME', $_SERVER['SCRIPT_NAME']);
+        $this->set('SERVER_SOFTWARE', $_SERVER['SERVER_SOFTWARE']);
+        $this->set('HTTP_USER_AGENT', $_SERVER['HTTP_USER_AGENT']);
     }
 
     private function add_php_checks() {
-
         $this->set('HAS_PHP_EXIF', function_exists('exif_thumbnail'));
 
         $has_php_jpeg = false;
@@ -73,14 +68,12 @@ class Setup {
     }
 
     private function add_app_metadata() {
-
         $this->set('NAME', 'h5ai');
-        $this->set('VERSION', '{{pkg.version}}');
+        $this->set('VERSION', H5AI_VERSION);
         $this->set('FILE_PREFIX', '_h5ai');
     }
 
     private function add_server_metadata_and_check() {
-
         $server_software = $this->get('SERVER_SOFTWARE');
         $server_name = null;
         $server_version = null;
@@ -96,7 +89,6 @@ class Setup {
     }
 
     private function add_paths() {
-
         $script_name = $this->get('SCRIPT_NAME');
         if ($this->get('SERVER_NAME') === 'lighttpd') {
             $script_name = preg_replace('#^.*?//#', '/', $script_name);
@@ -123,13 +115,12 @@ class Setup {
     }
 
     private function add_sys_cmd_checks() {
-
         $cmds_cache_path = Util::normalize_path($this->get('CACHE_PRV_PATH') . '/cmds.json', false);
 
         $cmds = Json::load($cmds_cache_path);
         if (sizeof($cmds) === 0 || $this->refresh) {
             $cmds['command'] = Util::exec_0('command -v command');
-            $cmds['which'] = Util::exec_0('which which');
+            $cmds['which'] = Util::exec_0('which which') || Util::exec_0('which which.exe');
 
             $cmd = false;
             if ($cmds['command']) {
@@ -139,7 +130,7 @@ class Setup {
             }
 
             foreach (['avconv', 'convert', 'du', 'ffmpeg', 'gm', 'tar', 'zip'] as $c) {
-                $cmds[$c] = ($cmd !== false) && Util::exec_0($cmd . ' ' . $c);
+                $cmds[$c] = ($cmd !== false) && (Util::exec_0($cmd . ' ' . $c) || Util::exec_0($cmd . ' ' . $c . '.exe'));
             }
 
             Json::save($cmds_cache_path, $cmds);
@@ -150,7 +141,6 @@ class Setup {
     }
 
     public function to_jsono($as_admin = false) {
-
         $keys = [
             'PUBLIC_HREF',
             'ROOT_HREF'
